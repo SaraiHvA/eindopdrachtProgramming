@@ -59,11 +59,13 @@ class Validation:
         else:
             print(str(inputTryAgainList) + f' is geen geldige keuze, kies ja of nee.')
 
+
 # This function calculates the age of the user
 # Calculates the age from the given birthday
 def calculate_age(born):
     today = date.today()
     return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+
 
 # This function calculates the income
 def calculateIncome(birthday, period, hours, hoursWeek):
@@ -72,6 +74,7 @@ def calculateIncome(birthday, period, hours, hoursWeek):
     answerHours = Calculate.calculateHours(hoursWeek, hours, anwserFulltime)
     answer = Calculate.giveDesiredResult(period, answerHours)
     return answer
+
 
 # In this class are functions that calculates the income step by step
 class Calculate:
@@ -131,6 +134,7 @@ class Calculate:
             newIncome = income / 31 * 365
             return newIncome
         return
+
 
 while True:
     print("Minimum loon berekenen.")
