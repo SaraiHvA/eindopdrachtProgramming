@@ -28,7 +28,9 @@ class Validation:
     # This function validates the full-time hours
     # Expects the input is an item from the given list
     def validateFulltimeList(inputFulltimeList: str):
-        fulltimeInt = int(inputFulltimeList)
+        if(int(inputFulltimeList)):
+            fulltimeInt = int(inputFulltimeList)
+
         if fulltimeInt in fulltimeList:
             return fulltimeInt
         else:
@@ -79,7 +81,7 @@ def calculateIncome(birthday, period, hours, hoursWeek):
 # In this class are functions that calculates the income step by step
 class Calculate:
 
-    # This function gets the minimum income for a 40 hour working week with the given age
+    # This function gets the minimum income per hour for a 40 hour working week with the given age
     def calculateBirthday(birthday):
         if birthday >= 21:
             income = 9.72
@@ -106,10 +108,10 @@ class Calculate:
     # This function calculates the minimum income of the given full-time working week
     def calculateFullTimeHours(hours, income):
         if(hours == 38):
-            newIncome = income / 5
+            newIncome = income + 1
             return newIncome
         elif(hours == 36):
-            newIncome = income / 2
+            newIncome = income + 2
             return newIncome
         else:
             return income
@@ -122,17 +124,18 @@ class Calculate:
 
     # This function returns the income to the desired result
     def giveDesiredResult(period, income):
-        if(period == 'maand'):
-            return income
-        elif(period == 'dag'):
-            newIncome = income / 31
+        incomeDay = income * 8
+        if(period == 'dag'):
+            return incomeDay
+        elif(period == 'maand'):
+            newIncome = incomeDay * 31
             return newIncome
         elif(period == 'week'):
-            newIncome = income / 31 * 7
-            return income
-        elif(period == 'jaar'):
-            newIncome = income / 31 * 365
+            newIncome = incomeDay * 7
             return newIncome
+        elif(period == 'jaar'):
+            newIncome = incomeDay * 365
+            return float(newIncome)
         return
 
 
@@ -188,10 +191,20 @@ while True:
         print("Uw netto " + period + " salaris is: ")
         print(result)
 
-    # This if statement checks the in
-    tryAgainList = ["ja", "nee"]
-    tryAgain = input("Wilt u opnieuw een bruto-netto berekening doen?")
-    if tryAgain == 'ja':
-        continue
-    else:
+    while True:
+        # This if statement checks the if the user wants to continue or not
+        tryAgainList = ["ja", "nee"]
+        tryAgain = input("Wilt u opnieuw een bruto-netto berekening doen?")
+        if not Validation.validateTryAgainList(tryAgain):
+            continue
+        if tryAgain == 'ja':
+            break
+        elif tryAgain == 'nee':
+            break
+        else:
+            continue
+
+    # This if statement check if the input is 'nee', return a massage and exits the application
+    if tryAgain == 'nee':
+        print("Bedankt en tot ziens!")
         break
