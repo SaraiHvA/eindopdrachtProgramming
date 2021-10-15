@@ -5,7 +5,6 @@
 # With a full-time job, for example, this is 36, 38 or 40 hours.
 from datetime import datetime
 from datetime import date
-import math
 
 
 # This class validates the input from the user
@@ -13,7 +12,9 @@ class Validation:
 
     # This function validates the birthday
     # Example valid birthday 01-01-1990
-    def validateBirthday(self, inputBirthday):
+    # Argument self is the class Validation
+    # Argument inputBirthday is the birthday the user has given
+    def validateBirthday(self, inputBirthday: str):
         try:
             datetime.strptime(str(inputBirthday), '%d-%m-%Y')
             return inputBirthday
@@ -23,6 +24,8 @@ class Validation:
 
     # This function validates the period
     # Expects the input is an item from the given list
+    # Argument self is the class Validation
+    # Argument inputPeriodList is the period the user has given
     def validatePeriodList(self, inputPeriodList: str):
         if inputPeriodList in periodList:
             return inputPeriodList
@@ -31,14 +34,18 @@ class Validation:
 
     # This function validates the full-time hours
     # Expects the input is an item from the given list
-    def validateFulltimeList(self, inputFulltimeList: int):
-        if int(inputFulltimeList) in fulltimeList:
-            return int(inputFulltimeList)
+    # Argument self is the class Validation
+    # Argument inputFulltimeHours are the full-time hours the user has given
+    def validateFulltimeList(self, inputFulltimeHours: int):
+        if int(inputFulltimeHours) in fulltimeList:
+            return int(inputFulltimeHours)
         else:
-            print('Fout: ', int(inputFulltimeList) + f' is geen geldige keuze, kies een optie uit de lijst.')
+            print('Fout: ', int(inputFulltimeHours) + f' is geen geldige keuze, kies een optie uit de lijst.')
 
     # This function validates the working hours of the user per week
     # Expect the input to be greater than 0 and less than or equal to the given full-time hours of your employer
+    # Argument self is the class Validation
+    # Argument inputHoursWeek are the worked hours per week the user has given
     def validateWorkingHoursWeek(self, inputHoursWeek: int):
         if int(inputHoursWeek) and int(hours) >= int(inputHoursWeek) > 0:
             return inputHoursWeek
@@ -47,6 +54,8 @@ class Validation:
 
     # This function validates the try again answer
     # Expects the input is an item from the given list
+    # Argument self is the class Validation
+    # Argument inputTryAgainList is the answer the user has given
     def validateTryAgainList(self, inputTryAgainList: str):
         if inputTryAgainList in tryAgainList:
             return inputTryAgainList
@@ -56,12 +65,19 @@ class Validation:
 
 # This function calculates the age of the user
 # Calculates the age from the given birthday
+# Argument born is the birthday the user has given
 def calculate_age(born):
     today = date.today()
     return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
 
 
 # This function calculate your minimum wage or minimum youth wage
+# Argument Calculate is the class Calculate
+# Argument age is the age of the user
+# Argument hoursFullTime are the full-time hours per week the user has given
+# Argument hoursWeek are the worked hours per week the user has given
+# Argument period is the period the user has given
+# Returns the minimum wage of the user
 def calculateIncome(Calculate, age: int, hoursFullTime: int, hoursWeek: int, period: str):
     anwserAge = Calculate.calculateIncomeWithBirthday(Calculate, age)
     anwserFulltime = Calculate.getIncomeFullTimeHours(Calculate, hoursFullTime, anwserAge)
@@ -73,6 +89,7 @@ def calculateIncome(Calculate, age: int, hoursFullTime: int, hoursWeek: int, per
 
 # In this class are functions that calculates the minimum wage step by step
 class Calculate:
+    # Variables for calculating the desired period of the user
     day = 8  # hours
     week = 7  # days
     month = 31  # days
@@ -114,6 +131,8 @@ class Calculate:
     # If the age is above 21 years the minimum wage remains the same
     # If the age is under 15 years the minimum wage remains the same
     # This function returns the age
+    # Argument self is the class Calculate
+    # Argument age is the age of the user
     def calculateIncomeWithBirthday(self, age: int):
         if age > 21:
             age = 21
@@ -125,6 +144,10 @@ class Calculate:
 
     # This function gives the minimum wage of the given full-time working week at your employer
     # Expects the age and full-time working week at your employer
+    # Argument self is the class Calculate
+    # Argument hoursFullTime are the full-time hours per week the user has given
+    # Argument age is the age of the user
+    # Returns the user's minimum wage for the user's age by the employee's given full-time week
     def getIncomeFullTimeHours(self, hoursFullTime: int, age: int):
         if hoursFullTime == 40:
             income = self.minimumWageFortyHours.get(age)
@@ -137,12 +160,20 @@ class Calculate:
             return self.minimumWageFortyHours.get(age)
 
     # This function calculates the minimum wage of the given weekly hours the user is working
+    # Argument self is the class Calculate Argument hoursWeek are the worked hours per week the user has given
+    # Argument hoursFullTime are the full-time hours per week (at their employer) the user has given
+    # Argument income is the minimum hourly wage of the user age, for the full-time hours per week (at their employer) the user has given
+    # Returns the user's minimum wage calculated by dividing the average earnings for the user's age by the employee's given full-time week times the user's weekly hours worked
     def calculateHours(self, hoursWeek: int, hoursFulltime: int, income: float):
         newIncome = float(income) / int(hoursFulltime) * int(hoursWeek)
         return newIncome
 
     # This function returns the income to the desired result:
     # "maand", "dag", "week", "jaar", "uur"
+    # Argument self is the class Calculate
+    # Argument period is the period the user has given
+    # Argument income is the minimum wage of the user age, for the worked hours per week
+    # Returns the income in the desired period the user has given
     def giveDesiredResult(self, period: str, income: float):
         incomeDay = float(income) * self.day
         if (period == 'uur'):
@@ -162,10 +193,13 @@ class Calculate:
 
     # This function returns the income with 2 decimals after the comma
     # This only applies if the income has more than 2 decimal places after the comma
+    # Argument self is the class Calculate
+    # Argument income is the minimum wage of the user age, given in the desired period of the user
+    # Returns the rounded income
     def roundIncomeOff(self, income):
         result = str(income)
         roundedResult = round(income, 2)
-        return int(roundedResult)
+        return float(roundedResult)
 
 
 # This while loop causes that the questions will be asked again after the answer after the last question is 'ja'
@@ -188,10 +222,15 @@ while True:
         # If statement handles the input validation for the birthday
         # If false then the question will be asked again.
         # If true, the given birthday is converted to the user's age
+        # Argument Validation is the class Validation
+        # Argument birthdayInput is the birthday the user has given
         if not Validation.validateBirthday(Validation, birthdayInput):
             continue
         else:
+            # Argument birthdayInput is the birthday the user has given
+            # Argument '%d-%m-%Y' is the format I want to have
             dob = datetime.strptime(birthdayInput, '%d-%m-%Y')
+            # Argument dob is the birthday the user has given in the '%d-%m-%Y' format
             age = calculate_age(dob)
             break
 
@@ -204,6 +243,8 @@ while True:
         # This if statement handles the input validation for the period
         # If false then the question will be asked again
         # If true, the given pay period is set.
+        # Argument Validation is the class Validation
+        # Argument payPeriod is the period the user has given
         if not Validation.validatePeriodList(Validation, payPeriod):
             continue
         else:
@@ -219,6 +260,8 @@ while True:
         # This if statement handles the input validation for the full-time hours at the employer
         # If false then the question will be asked again
         # If true, the given full-time hours at your employer is set
+        # Argument Validation is the class Validation
+        # Argument hoursInput are the full-time hours the user has given
         if not Validation.validateFulltimeList(Validation, hoursInput):
             continue
         else:
@@ -233,29 +276,36 @@ while True:
         # This if statement handles the input validation for the hours the user is working per week
         # If false then the question will be asked again
         # If true, the given weekly worked hours is set
+        # Argument Validation is the class Validation
+        # Argument hoursWeekInput are the worked hours per week the user has given
         if not Validation.validateWorkingHoursWeek(Validation, hoursWeekInput):
             continue
         else:
             hoursWeek = hoursWeekInput
             break
 
-    # This method calculates the minimum wage with the given input from the user and returns the result
+    # The method calculateIncome calculates the minimum wage with the given input from the user and returns the result
+    # Argument Calculate is the class Calculate
+    # Argument age is the age of the user
+    # Argument hours are the full-time hours at their employer the user has given
+    # Argument hoursWeek are the worked hours per week the user has given
+    # Argument period is the period the user has given
+    # The minimum wage of the user is set in result
     result = calculateIncome(Calculate, age, hours, hoursWeek, period)
     # This if statement checks if result is set and prints the minimum wage in the given period the user gave.
     if result:
-        roundedResult = round(result, 2)
-
-        print("Uw minimum loon per " + period + " is: %s" % u"\N{euro sign}", roundedResult)
+        print("Uw minimumloon per " + period + " is: %s" % u"\N{euro sign}", result)
         print()
-
     # The while loop causes the question to be asked again if an incorrect answer is given
     while True:
         tryAgainList = ["ja", "nee"]
         print("Keuze: ", tryAgainList)
-        tryAgain = input("Wilt u een ander minimum loon berekenen / wilt u opnieuw beginnen?")
+        tryAgain = input("Wilt u een ander minimumloon berekenen / wilt u opnieuw beginnen?")
         # This if statement handles the input validation - if the choice is 'ja' or 'nee'
         # If returned false then the question will be asked again
         # Else you continue to the next if statement within the while
+        # Argument Validation is the class Validation
+        # Argument tryAgain is the answer the user has given
         if not Validation.validateTryAgainList(Validation, tryAgain):
             continue
         # This if statement checks if the choice is 'ja' or 'nee'
