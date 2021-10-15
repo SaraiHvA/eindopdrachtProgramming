@@ -19,8 +19,7 @@ class Validation:
             datetime.strptime(str(inputBirthday), '%d-%m-%Y')
             return inputBirthday
         except ValueError:
-            print('Fout: ', str(inputBirthday) + f' is geen geldige geboortedatum, geef een geldige datum op, die een '
-                                                 f'd-m-Y formaat heeft.')
+            print('Fout: ', str(inputBirthday) + f' is geen geldige geboortedatum, geef een geldige datum op, bijv. 01-01-1990.')
 
     # This function validates the period
     # Expects the input is an item from the given list
@@ -40,7 +39,7 @@ class Validation:
         if int(inputFulltimeHours) in fulltimeList:
             return int(inputFulltimeHours)
         else:
-            print('Fout: ', int(inputFulltimeHours) + f' is geen geldige keuze, kies een optie uit de lijst.')
+            print('Fout: ', str(inputFulltimeHours) + f' is geen geldige keuze, kies een optie uit de lijst.')
 
     # This function validates the working hours of the user per week
     # Expect the input to be greater than 0 and less than or equal to the given full-time hours of your employer
@@ -238,7 +237,7 @@ while True:
     while True:
         periodList = ["maand", "dag", "week", "jaar", "uur"]
         print('Loon per: ', periodList)
-        payPeriod = input("Hoe wilt u uw minimum loon terug krijgen? Kies uit de lijst hierboven: ")
+        payPeriod = input("Hoe wilt u uw minimumloon terug krijgen? Kies uit de lijst hierboven: ")
         print()
         # This if statement handles the input validation for the period
         # If false then the question will be asked again
