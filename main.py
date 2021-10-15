@@ -9,9 +9,6 @@ import math
 
 
 # This class validates the input from the user
-from numbers import Number
-
-
 class Validation:
 
     # This function validates the birthday
@@ -171,6 +168,7 @@ class Calculate:
         return int(roundedResult)
 
 
+# This while loop causes that the questions will be asked again after the answer after the last question is 'ja'
 while True:
     print("Rekenhulp: minimumloon berekenen")
     print()
